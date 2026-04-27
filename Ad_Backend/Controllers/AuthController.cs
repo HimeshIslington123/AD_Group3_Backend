@@ -1,5 +1,7 @@
+using System.Security.Claims;
 using Ad_Backend.Application.DTOs;
 using Ad_Backend.Application.Interface.IService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ad_Backend.Controllers;
@@ -15,6 +17,23 @@ public class AuthController : ControllerBase
         _authService = authService;
     }
 
+    
+    
+    [Authorize]
+    [HttpGet("me")]
+    public IActionResult GetMe()
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var email = User.FindFirst(ClaimTypes.Email)?.Value;
+
+        return Ok(new
+        {
+            userId,
+            email
+        });
+    }
+    
+    
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterDto dto)
     {
