@@ -1,7 +1,11 @@
+using Ad_Backend.Application.Interface.IRepository;
+using Ad_Backend.Application.Interface.IService;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-
+builder.Services.AddScoped<IAuthRepository, IAuthRepository>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

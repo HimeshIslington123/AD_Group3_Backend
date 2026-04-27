@@ -1276,6 +1276,26 @@
             "rid": "win"
           }
         }
+      },
+      "Ad_Backend.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "dependencies": {
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "10.0.0",
+          "Microsoft.AspNetCore.OpenApi": "10.0.7",
+          "Microsoft.EntityFrameworkCore": "10.0.0",
+          "Microsoft.EntityFrameworkCore.SqlServer": "10.0.0",
+          "Npgsql.EntityFrameworkCore.PostgreSQL": "10.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Ad_Backend.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Ad_Backend.Domain.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       }
     }
   },
@@ -3632,10 +3652,16 @@
         "system.windows.extensions.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "Ad_Backend.Domain/1.0.0": {
+      "type": "project",
+      "path": "../Ad_Backend.Domain/Ad_Backend.Domain.csproj",
+      "msbuildProject": "../Ad_Backend.Domain/Ad_Backend.Domain.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net10.0": [
+      "Ad_Backend.Domain >= 1.0.0",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 10.0.0",
       "Microsoft.AspNetCore.OpenApi >= 10.0.7",
       "Microsoft.EntityFrameworkCore >= 10.0.0",
@@ -3668,7 +3694,11 @@
       "frameworks": {
         "net10.0": {
           "targetAlias": "net10.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "/Users/himeshshakya/RiderProjects/Ad_Backend/Ad_Backend.Domain/Ad_Backend.Domain.csproj": {
+              "projectPath": "/Users/himeshshakya/RiderProjects/Ad_Backend/Ad_Backend.Domain/Ad_Backend.Domain.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
