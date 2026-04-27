@@ -5,7 +5,7 @@ using Ad_Backend.Domain.Domain;
 
 namespace Ad_Backend.Infrastructure.Service;
 
-public class AuthService : IAuthService
+public class AuthService: IAuthService
 {
     private readonly IAuthRepository _authRepository;
 
