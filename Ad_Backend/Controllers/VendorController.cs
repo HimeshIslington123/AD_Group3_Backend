@@ -1,8 +1,10 @@
 using Ad_Backend.Application.DTOs;
 using Ad_Backend.Application.DTOs.Vendors;
 using Ad_Backend.Application.Interface.IService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class VendorController : ControllerBase

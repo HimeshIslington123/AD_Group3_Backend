@@ -11,11 +11,8 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
     }
 
-    public DbSet<Customer> Customers { get; set; }
-    public DbSet<Vehicle> Vehicles { get; set; }
     public DbSet<Vendor> Vendors { get; set; }
-    public DbSet<SalesInvoice> SalesInvoices { get; set; }
-    public DbSet<SalesInvoiceItem> SalesInvoiceItems { get; set; }
     public DbSet<Part> Parts { get; set; }
-    public DbSet<Appointment> Appointments { get; set; }
+    public DbSet<PurchaseInvoice> PurchaseInvoices { get; set; }
+    public DbSet<PurchaseInvoiceItem> PurchaseInvoiceItems { get; set; }
 }
