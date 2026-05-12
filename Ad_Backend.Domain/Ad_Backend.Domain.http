@@ -1,0 +1,6 @@
+@Ad_Backend.Domain_HostAddress = http://localhost:5244
+
+GET {{Ad_Backend.Domain_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

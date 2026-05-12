@@ -1,0 +1,6 @@
+@Ad_Backend.Application_HostAddress = http://localhost:5146
+
+GET {{Ad_Backend.Application_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
