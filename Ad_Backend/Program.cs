@@ -1,14 +1,11 @@
 using Ad_Backend.Application.Interface.IRepository;
 using Ad_Backend.Application.Interface.IService;
-using Ad_Backend.Domain.Domain;
 using Ad_Backend.Infrastructure.Presistance;
 using Ad_Backend.Infrastructure.Repository;
 using Ad_Backend.Infrastructure.Service;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 builder.Services.AddCors(options =>
 {
@@ -26,17 +23,9 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-    .AddEntityFrameworkStores<AppDbContext>()
-    .AddDefaultTokenProviders();
-
 // DI
-builder.Services.AddScoped<IAuthRepository, AuthRepository>();
-builder.Services.AddScoped<IAuthService, AuthService>();
-
-builder.Services.AddScoped<IVendorRepository,VendorRepository>();
-builder.Services.AddScoped<IVendorService, VendorService>();
+builder.Services.AddScoped<IPurchaseInvoiceRepository, PurchaseInvoiceRepository>();
+builder.Services.AddScoped<IPurchaseInvoiceService, PurchaseInvoiceService>();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -51,15 +40,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// Middleware ORDER IS IMPORTANT
 app.UseRouting();
-
-
 app.UseCors("AllowAll");
-
-app.UseAuthentication();
-app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
