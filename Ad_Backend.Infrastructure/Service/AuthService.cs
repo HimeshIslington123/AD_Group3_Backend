@@ -6,22 +6,24 @@ using Ad_Backend.Application.Interface.IRepository;
 using Ad_Backend.Application.Interface.IService;
 using Ad_Backend.Domain.Domain;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ad_Backend.Infrastructure.Service;
 
-public class AuthService: IAuthService
+public class AuthService : IAuthService
 {
     private readonly IAuthRepository _authRepository;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public AuthService(IAuthRepository authRepository)
+    public AuthService(IAuthRepository authRepository, UserManager<ApplicationUser> userManager)
     {
         _authRepository = authRepository;
+        _userManager = userManager;
     }
 
-
-    private async Task<string> GenerateJwt(ApplicationUser user)
+    private string GenerateJwt(ApplicationUser user)
     {
-        var roles = await _authRepository.GetRolesAsync(user);
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id),
@@ -29,15 +31,7 @@ public class AuthService: IAuthService
             new Claim(ClaimTypes.Name, user.UserName)
         };
 
-        foreach (var role in roles)
-        {
-            claims.Add(new Claim(ClaimTypes.Role, role));
-        }
-
-        var key = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes("THIS_IS_SUPER_SEffffffffffffCRET_KEY_12345")
-        );
-
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("THIS_IS_SUPER_SEffffffffffffCRET_KEY_12345"));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
@@ -50,7 +44,7 @@ public class AuthService: IAuthService
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
-    
+
     public async Task<string> RegisterAsync(RegisterDto dto)
     {
         var user = new ApplicationUser
@@ -60,12 +54,34 @@ public class AuthService: IAuthService
             FullName = dto.FullName
         };
 
-        var result = await _authRepository.RegisterAsync(user, dto.Password, dto.Role ?? "Staff");
+        var result = await _authRepository.RegisterAsync(user, dto.Password);
 
         if (!result.Succeeded)
             return string.Join(", ", result.Errors.Select(e => e.Description));
 
-        return "User registered successfully";
+        var role = dto.Role ?? "Staff";
+
+        if (!await _authRepository.RoleExistsAsync(role))
+        {
+            await _authRepository.CreateRoleAsync(role);
+        }
+
+        await _authRepository.AddToRoleAsync(user, role);
+
+        if (role == "Staff")
+        {
+            var position = dto.Position ?? "Staff";
+            var staff = new Staff
+            {
+                FullName = dto.FullName,
+                Email = dto.Email,
+                UserId = user.Id,
+                Position = position,
+            };
+            await _authRepository.CreateStaffAsync(staff);
+        }
+
+        return $"{role} registered successfully";
     }
 
     public async Task<AuthResponseDto> LoginAsync(LoginDto dto)
@@ -80,7 +96,7 @@ public class AuthService: IAuthService
         if (!valid)
             throw new Exception("Invalid credentials");
 
-        var token = await GenerateJwt(user); 
+        var token = GenerateJwt(user);
 
         return new AuthResponseDto
         {
@@ -91,37 +107,33 @@ public class AuthService: IAuthService
 
     public async Task<List<UserDto>> GetAllUsersAsync()
     {
-        var users = await _authRepository.GetAllUsersAsync();
-        var userDtos = new List<UserDto>();
-
-        foreach (var user in users)
+        var users = await _userManager.Users.ToListAsync();
+        return users.Select(u => new UserDto
         {
-            var roles = await _authRepository.GetRolesAsync(user);
-            userDtos.Add(new UserDto
-            {
-                Id = user.Id,
-                FullName = user.FullName,
-                Email = user.Email,
-                Role = roles.FirstOrDefault() ?? "No Role"
-            });
-        }
-
-        return userDtos;
+            Id = u.Id,
+            Email = u.Email,
+            FullName = u.FullName
+        }).ToList();
     }
 
-    public async Task<string> UpdateUserRoleAsync(string userId, string newRole)
+    public async Task<string> UpdateUserRoleAsync(string userId, string role)
     {
-        var users = await _authRepository.GetAllUsersAsync();
-        var user = users.FirstOrDefault(u => u.Id == userId);
+        var user = await _userManager.FindByIdAsync(userId);
         if (user == null) return "User not found";
 
-        var result = await _authRepository.UpdateRoleAsync(user, newRole);
-        return result.Succeeded ? "Role updated successfully" : string.Join(", ", result.Errors.Select(e => e.Description));
+        var roles = await _userManager.GetRolesAsync(user);
+        await _userManager.RemoveFromRolesAsync(user, roles);
+        await _userManager.AddToRoleAsync(user, role);
+
+        return "Role updated successfully";
     }
 
     public async Task<string> DeleteUserAsync(string userId)
     {
-        var result = await _authRepository.DeleteUserAsync(userId);
-        return result.Succeeded ? "User deleted successfully" : string.Join(", ", result.Errors.Select(e => e.Description));
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null) return "User not found";
+
+        await _userManager.DeleteAsync(user);
+        return "User deleted successfully";
     }
 }

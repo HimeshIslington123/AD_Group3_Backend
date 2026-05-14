@@ -3,6 +3,7 @@ using System;
 using Ad_Backend.Infrastructure.Presistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Ad_Backend.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260427164223_AddStaffTable")]
+    partial class AddStaffTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -279,7 +282,6 @@ namespace Ad_Backend.Infrastructure.Migrations
                     b.ToTable("SalesInvoiceItems");
                 });
 
-<<<<<<< HEAD
             modelBuilder.Entity("Ad_Backend.Domain.Domain.Staff", b =>
                 {
                     b.Property<long>("Id")
@@ -311,8 +313,6 @@ namespace Ad_Backend.Infrastructure.Migrations
                     b.ToTable("Staffs");
                 });
 
-=======
->>>>>>> origin/main
             modelBuilder.Entity("Ad_Backend.Domain.Domain.Vehicle", b =>
                 {
                     b.Property<long>("Id")
@@ -593,7 +593,6 @@ namespace Ad_Backend.Infrastructure.Migrations
                     b.Navigation("SalesInvoice");
                 });
 
-<<<<<<< HEAD
             modelBuilder.Entity("Ad_Backend.Domain.Domain.Staff", b =>
                 {
                     b.HasOne("Ad_Backend.Domain.Domain.ApplicationUser", "User")
@@ -605,8 +604,6 @@ namespace Ad_Backend.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-=======
->>>>>>> origin/main
             modelBuilder.Entity("Ad_Backend.Domain.Domain.Vehicle", b =>
                 {
                     b.HasOne("Ad_Backend.Domain.Domain.Customer", "Customer")

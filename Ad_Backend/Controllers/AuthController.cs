@@ -36,15 +36,32 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterDto dto)
     {
-        var result = await _authService.RegisterAsync(dto);
-        return Ok(new { message = result });
+        try
+        {
+            var result = await _authService.RegisterAsync(dto);
+            if (result.Contains("successfully"))
+                return Ok(new { message = result });
+
+            return BadRequest(new { error = result });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
     }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginDto dto)
     {
-        var result = await _authService.LoginAsync(dto);
-        return Ok(result);
+        try
+        {
+            var result = await _authService.LoginAsync(dto);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return Unauthorized(new { error = ex.Message });
+        }
     }
 
     // Admin Only: Manage Staff

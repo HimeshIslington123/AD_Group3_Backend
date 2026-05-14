@@ -1,18 +1,33 @@
 using Ad_Backend.Application.Interface.IRepository;
 using Ad_Backend.Domain.Domain;
+using Ad_Backend.Infrastructure.Presistance;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ad_Backend.Infrastructure.Repository;
+
 public class AuthRepository : IAuthRepository
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
+<<<<<<< HEAD
 
     public AuthRepository(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
     {
         _userManager = userManager;
         _roleManager = roleManager;
+=======
+    private readonly AppDbContext _context;
+
+    public AuthRepository(
+        UserManager<ApplicationUser> userManager,
+        RoleManager<IdentityRole> roleManager,
+        AppDbContext context)
+    {
+        _userManager = userManager;
+        _roleManager = roleManager;
+        _context = context;
+>>>>>>> main
     }
 
     public async Task<IdentityResult> RegisterAsync(ApplicationUser user, string password, string role)
@@ -39,6 +54,7 @@ public class AuthRepository : IAuthRepository
         return await _userManager.CheckPasswordAsync(user, password);
     }
 
+<<<<<<< HEAD
     public async Task<List<ApplicationUser>> GetAllUsersAsync()
     {
         return await _userManager.Users.ToListAsync();
@@ -66,5 +82,26 @@ public class AuthRepository : IAuthRepository
     public async Task<IList<string>> GetRolesAsync(ApplicationUser user)
     {
         return await _userManager.GetRolesAsync(user);
+=======
+    public async Task AddToRoleAsync(ApplicationUser user, string role)
+    {
+        await _userManager.AddToRoleAsync(user, role);
+    }
+
+    public async Task<bool> RoleExistsAsync(string role)
+    {
+        return await _roleManager.RoleExistsAsync(role);
+    }
+
+    public async Task CreateRoleAsync(string role)
+    {
+        await _roleManager.CreateAsync(new IdentityRole(role));
+    }
+
+    public async Task CreateStaffAsync(Staff staff)
+    {
+        _context.Staffs.Add(staff);
+        await _context.SaveChangesAsync();
+>>>>>>> main
     }
 }
