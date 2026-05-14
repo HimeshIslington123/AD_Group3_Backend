@@ -11,6 +11,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
     }
 
+    public DbSet<Staff> Staffs { get; set; }
     public DbSet<Vendor> Vendors { get; set; }
     public DbSet<Part> Parts { get; set; }
     public DbSet<PurchaseInvoice> PurchaseInvoices { get; set; }
