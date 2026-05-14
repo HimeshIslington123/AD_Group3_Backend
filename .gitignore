@@ -1,7 +1,10 @@
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
 user@DESKTOP-6FDALFP MINGW64 /d/3rdYears CoueseWork/.Net Project/AD_Group3_Backend (feature-3/parts-management)
 $
 =======
+>>>>>>> main
 >>>>>>> main
 [Bb]in/
 [Oo]bj/
@@ -22,5 +25,9 @@ $
 <<<<<<< HEAD
 !tsconfig.json
 =======
+<<<<<<< HEAD
 !tsconfig.json
+=======
+!tsconfig.json
+>>>>>>> main
 >>>>>>> main
