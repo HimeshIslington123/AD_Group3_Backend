@@ -9,7 +9,11 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Ad_Backend.Infrastructure.Service;
 
+<<<<<<< HEAD
 public class AuthService : IAuthService
+=======
+public class AuthService: IAuthService
+>>>>>>> origin/main
 {
     private readonly IAuthRepository _authRepository;
 
@@ -17,6 +21,11 @@ public class AuthService : IAuthService
     {
         _authRepository = authRepository;
     }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> origin/main
     private string GenerateJwt(ApplicationUser user)
     {
         var claims = new[]
@@ -27,7 +36,11 @@ public class AuthService : IAuthService
         };
 
         var key = new SymmetricSecurityKey(
+<<<<<<< HEAD
             Encoding.UTF8.GetBytes("THIS_IS_SUPER_SECREddddddededededT_KEY_12345")
+=======
+            Encoding.UTF8.GetBytes("THIS_IS_SUPER_SEffffffffffffCRET_KEY_12345")
+>>>>>>> origin/main
         );
 
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -42,10 +55,16 @@ public class AuthService : IAuthService
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
+<<<<<<< HEAD
 
     public async Task<string> RegisterAsync(RegisterDto dto)
     {
   
+=======
+    
+    public async Task<string> RegisterAsync(RegisterDto dto)
+    {
+>>>>>>> origin/main
         var user = new ApplicationUser
         {
             UserName = dto.Email,
@@ -58,6 +77,7 @@ public class AuthService : IAuthService
         if (!result.Succeeded)
             return string.Join(", ", result.Errors.Select(e => e.Description));
 
+<<<<<<< HEAD
         var role = dto.Role ?? "Staff";
 
 
@@ -84,6 +104,9 @@ public class AuthService : IAuthService
         }
 
         return $"{role} registered successfully";
+=======
+        return "User registered successfully";
+>>>>>>> origin/main
     }
 
     public async Task<AuthResponseDto> LoginAsync(LoginDto dto)
@@ -98,7 +121,11 @@ public class AuthService : IAuthService
         if (!valid)
             throw new Exception("Invalid credentials");
 
+<<<<<<< HEAD
         var token = GenerateJwt(user);
+=======
+        var token = GenerateJwt(user); 
+>>>>>>> origin/main
 
         return new AuthResponseDto
         {

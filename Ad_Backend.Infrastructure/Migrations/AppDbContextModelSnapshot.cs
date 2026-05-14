@@ -279,6 +279,7 @@ namespace Ad_Backend.Infrastructure.Migrations
                     b.ToTable("SalesInvoiceItems");
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("Ad_Backend.Domain.Domain.Staff", b =>
                 {
                     b.Property<long>("Id")
@@ -310,6 +311,8 @@ namespace Ad_Backend.Infrastructure.Migrations
                     b.ToTable("Staffs");
                 });
 
+=======
+>>>>>>> origin/main
             modelBuilder.Entity("Ad_Backend.Domain.Domain.Vehicle", b =>
                 {
                     b.Property<long>("Id")
@@ -590,6 +593,7 @@ namespace Ad_Backend.Infrastructure.Migrations
                     b.Navigation("SalesInvoice");
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("Ad_Backend.Domain.Domain.Staff", b =>
                 {
                     b.HasOne("Ad_Backend.Domain.Domain.ApplicationUser", "User")
@@ -601,6 +605,8 @@ namespace Ad_Backend.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+=======
+>>>>>>> origin/main
             modelBuilder.Entity("Ad_Backend.Domain.Domain.Vehicle", b =>
                 {
                     b.HasOne("Ad_Backend.Domain.Domain.Customer", "Customer")
