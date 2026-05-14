@@ -1,6 +1,5 @@
 using Ad_Backend.Application.Interface.IRepository;
 using Ad_Backend.Domain.Domain;
-<<<<<<< HEAD
 using Ad_Backend.Infrastructure.Presistance;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -21,18 +20,6 @@ public class AuthRepository : IAuthRepository
         _userManager = userManager;
         _roleManager = roleManager;
         _context = context;
-=======
-using Microsoft.AspNetCore.Identity;
-
-namespace Ad_Backend.Infrastructure.Repository;
-public class AuthRepository : IAuthRepository
-{
-    private readonly UserManager<ApplicationUser> _userManager;
-
-    public AuthRepository(UserManager<ApplicationUser> userManager)
-    {
-        _userManager = userManager;
->>>>>>> origin/main
     }
 
     public async Task<IdentityResult> RegisterAsync(ApplicationUser user, string password)
@@ -49,7 +36,6 @@ public class AuthRepository : IAuthRepository
     {
         return await _userManager.CheckPasswordAsync(user, password);
     }
-<<<<<<< HEAD
 
     public async Task AddToRoleAsync(ApplicationUser user, string role)
     {
@@ -71,6 +57,4 @@ public class AuthRepository : IAuthRepository
         _context.Staffs.Add(staff);
         await _context.SaveChangesAsync();
     }
-=======
->>>>>>> origin/main
 }

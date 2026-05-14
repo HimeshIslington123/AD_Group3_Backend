@@ -8,13 +8,10 @@ public interface IAuthRepository
     Task<IdentityResult> RegisterAsync(ApplicationUser user, string password);
     Task<ApplicationUser?> GetByEmailAsync(string email);
     Task<bool> CheckPasswordAsync(ApplicationUser user, string password);
-<<<<<<< HEAD
 
     Task AddToRoleAsync(ApplicationUser user, string role);
     Task<bool> RoleExistsAsync(string role);
     Task CreateRoleAsync(string role);
 
     Task CreateStaffAsync(Staff staff);
-=======
->>>>>>> origin/main
 }
