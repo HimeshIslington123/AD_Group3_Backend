@@ -10,13 +10,6 @@ public class AuthRepository : IAuthRepository
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
-<<<<<<< HEAD
-
-    public AuthRepository(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
-    {
-        _userManager = userManager;
-        _roleManager = roleManager;
-=======
     private readonly AppDbContext _context;
 
     public AuthRepository(
@@ -27,7 +20,6 @@ public class AuthRepository : IAuthRepository
         _userManager = userManager;
         _roleManager = roleManager;
         _context = context;
->>>>>>> main
     }
 
     public async Task<IdentityResult> RegisterAsync(ApplicationUser user, string password, string role)
@@ -54,7 +46,6 @@ public class AuthRepository : IAuthRepository
         return await _userManager.CheckPasswordAsync(user, password);
     }
 
-<<<<<<< HEAD
     public async Task<List<ApplicationUser>> GetAllUsersAsync()
     {
         return await _userManager.Users.ToListAsync();
@@ -82,7 +73,8 @@ public class AuthRepository : IAuthRepository
     public async Task<IList<string>> GetRolesAsync(ApplicationUser user)
     {
         return await _userManager.GetRolesAsync(user);
-=======
+    }
+
     public async Task AddToRoleAsync(ApplicationUser user, string role)
     {
         await _userManager.AddToRoleAsync(user, role);
@@ -102,6 +94,5 @@ public class AuthRepository : IAuthRepository
     {
         _context.Staffs.Add(staff);
         await _context.SaveChangesAsync();
->>>>>>> main
     }
 }
