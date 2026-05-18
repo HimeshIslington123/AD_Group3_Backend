@@ -54,12 +54,11 @@ public class AuthService : IAuthService
             FullName = dto.FullName
         };
 
-        var result = await _authRepository.RegisterAsync(user, dto.Password);
+        var role = dto.Role ?? "Staff";
+        var result = await _authRepository.RegisterAsync(user, dto.Password, role);
 
         if (!result.Succeeded)
             return string.Join(", ", result.Errors.Select(e => e.Description));
-
-        var role = dto.Role ?? "Staff";
 
         if (!await _authRepository.RoleExistsAsync(role))
         {
@@ -108,12 +107,19 @@ public class AuthService : IAuthService
     public async Task<List<UserDto>> GetAllUsersAsync()
     {
         var users = await _userManager.Users.ToListAsync();
-        return users.Select(u => new UserDto
+        var userDtos = new List<UserDto>();
+        foreach (var u in users)
         {
-            Id = u.Id,
-            Email = u.Email,
-            FullName = u.FullName
-        }).ToList();
+            var roles = await _userManager.GetRolesAsync(u);
+            userDtos.Add(new UserDto
+            {
+                Id = u.Id,
+                Email = u.Email,
+                FullName = u.FullName,
+                Role = roles.FirstOrDefault() ?? "No Role"
+            });
+        }
+        return userDtos;
     }
 
     public async Task<string> UpdateUserRoleAsync(string userId, string role)
